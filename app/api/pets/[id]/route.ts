@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
 // Örnek veri
@@ -27,11 +27,14 @@ const pets = [
   }
 ];
 
+type RouteHandler = {
+  params: {
+    id: string;
+  };
+};
+
 // GET /api/pets/[id] - Belirli bir evcil hayvanı getir
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, { params }: RouteHandler) {
   try {
     const { data, error } = await supabase
       .from('pets')
@@ -58,12 +61,9 @@ export async function GET(
 }
 
 // PUT /api/pets/[id] - Evcil hayvan bilgilerini güncelle
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request, { params }: RouteHandler) {
   try {
-    const petData = await req.json();
+    const petData = await request.json();
     
     const { data, error } = await supabase
       .from('pets')
@@ -87,10 +87,7 @@ export async function PUT(
 }
 
 // DELETE /api/pets/[id] - Evcil hayvanı sil
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request, { params }: RouteHandler) {
   try {
     const { error } = await supabase
       .from('pets')
