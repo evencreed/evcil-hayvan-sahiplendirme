@@ -27,10 +27,16 @@ const pets = [
   }
 ];
 
+type RouteParams = {
+  params: {
+    id: string;
+  };
+};
+
 // GET /api/pets/[id] - Belirli bir evcil hayvanı getir
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     const { data, error } = await supabase
@@ -60,7 +66,7 @@ export async function GET(
 // PUT /api/pets/[id] - Evcil hayvan bilgilerini güncelle
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     const petData = await request.json();
@@ -89,7 +95,7 @@ export async function PUT(
 // DELETE /api/pets/[id] - Evcil hayvanı sil
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: RouteParams
 ) {
   try {
     const { error } = await supabase
