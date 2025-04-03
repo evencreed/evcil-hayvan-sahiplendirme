@@ -30,15 +30,13 @@ const pets = [
 // GET /api/pets/[id] - Belirli bir evcil hayvanı getir
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = context.params.id;
-  
   try {
     const { data, error } = await supabase
       .from('pets')
       .select('*')
-      .eq('id', id)
+      .eq('id', params.id)
       .single();
 
     if (error) throw error;
@@ -62,10 +60,8 @@ export async function GET(
 // PUT /api/pets/[id] - Evcil hayvan bilgilerini güncelle
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = context.params.id;
-  
   try {
     const petData = await request.json();
     
@@ -75,7 +71,7 @@ export async function PUT(
         ...petData,
         updated_at: new Date().toISOString()
       })
-      .eq('id', id)
+      .eq('id', params.id)
       .select();
 
     if (error) throw error;
@@ -93,15 +89,13 @@ export async function PUT(
 // DELETE /api/pets/[id] - Evcil hayvanı sil
 export async function DELETE(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const id = context.params.id;
-  
   try {
     const { error } = await supabase
       .from('pets')
       .delete()
-      .eq('id', id);
+      .eq('id', params.id);
 
     if (error) throw error;
 
