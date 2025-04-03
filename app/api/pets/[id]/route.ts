@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
 // Örnek veri
@@ -29,7 +29,7 @@ const pets = [
 
 // GET /api/pets/[id] - Belirli bir evcil hayvanı getir
 export async function GET(
-  request: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -59,11 +59,11 @@ export async function GET(
 
 // PUT /api/pets/[id] - Evcil hayvan bilgilerini güncelle
 export async function PUT(
-  request: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const petData = await request.json();
+    const petData = await req.json();
     
     const { data, error } = await supabase
       .from('pets')
@@ -88,7 +88,7 @@ export async function PUT(
 
 // DELETE /api/pets/[id] - Evcil hayvanı sil
 export async function DELETE(
-  request: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
